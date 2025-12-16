@@ -2,16 +2,22 @@ const mongoose = require("mongoose");
 
 const contestSchema = new mongoose.Schema(
   {
-    name: String,
-    image: String,
-    description: String,
-    price: Number,
-    prize: Number,
-    type: String, // Image Design, Article Writing etc.
-    deadline: Date,
-    creatorEmail: String,
+    title: {
+      type: String, required: true,
+    },
+    name: { type: String, required: true },
+    image: { type: String, required: true },
+    shortDescription: { type: String, required: true },
+    description: { type: String, required: true },
+    type: { type: String, required: true },
+    fee: { type: Number, required: true },
+    prize: { type: Number, required: true },
+    deadline: { type: Date, required: true },
+
+    creatorEmail: { type: String, required: true },
     status: { type: String, default: "pending" },
-    participantsCount: { type: Number, default: 0 },
+
+    participants: { type: Number, default: 0 },
     winner: Object
   },
   { timestamps: true }
