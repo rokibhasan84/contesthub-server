@@ -7,6 +7,7 @@ const path = require('path');
 const uploadRouter = require('./routes/upload');
 const contestsRouter = require('./routes/contests');
 const usersRouter = require('./routes/users'); // New users router
+const winnerRoutes = require('./routes/Winner.routes'); // Winner routes
 
 
 const app = express();
