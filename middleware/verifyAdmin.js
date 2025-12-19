@@ -11,7 +11,7 @@ const User = require("../models/User");
 
 module.exports = async function (req, res, next) {
   try {
-    const email = req.decoded?.email;
+    const email = req.user.email;
     if (!email) return res.status(401).send({ message: "Unauthorized" });
 
     const user = await User.findOne({ email });

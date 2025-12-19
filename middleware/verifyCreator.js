@@ -10,7 +10,8 @@ const User = require("../models/User");
 
 module.exports = async function verifyCreator(req, res, next) {
   try {
-    const email = req.decoded?.email;
+    const email = req.user.email;
+    console.log("verifyCreator email:", email);
     if (!email) {
       return res.status(401).send({ message: "Unauthorized" });
     }
@@ -25,6 +26,7 @@ module.exports = async function verifyCreator(req, res, next) {
     }
 
     next();
+
   } catch (error) {
     console.error("verifyCreator error:", error);
     res.status(500).send({ message: "Server error" });

@@ -2,12 +2,8 @@ const mongoose = require("mongoose");
 
 const contestSchema = new mongoose.Schema(
   {
-    title: {
-      type: String, required: true,
-    },
     name: { type: String, required: true },
     image: { type: String, required: true },
-    shortDescription: { type: String, required: true },
     description: { type: String, required: true },
     type: { type: String, required: true },
     fee: { type: Number, required: true },
@@ -17,10 +13,23 @@ const contestSchema = new mongoose.Schema(
     creatorEmail: { type: String, required: true },
     status: { type: String, default: "pending" },
 
-    participants: { type: Number, default: 0 },
-    winner: Object
+    participants: { type: [String], default: [] },
+    winner: {
+      name: String,
+      photo: String,
+      email: String
+    },
+    submissions: [
+      {
+        userEmail: String,
+        userName: String,
+        userPhoto: String,
+        taskLink: String,
+        submittedAt: Date
+      }
+    ]
   },
   { timestamps: true }
 );
 
-module.exports = mongoose.model("Contest", contestSchema);
+module.exports = mongoose.models.Contest || mongoose.model("Contest", contestSchema);

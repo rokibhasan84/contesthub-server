@@ -26,7 +26,12 @@ router.get('/:email', async (req, res) => {
     const user = await User.findOne({ email });
     if (!user) return res.status(404).send({ error: 'not found' });
 
-    const token = jwt.sign({ email: user.email, role: user.role }, process.env.JWT_SECRET, { expiresIn: '7d' });
+    const token = jwt.sign({ 
+      email: user.email, 
+      role: user.role,
+      name: user.name,
+      photo: user.photoURL
+     }, process.env.JWT_SECRET, { expiresIn: '7d' });
     res.send({ email: user.email, role: user.role, token });
   } catch (err) {
     res.status(500).send({ error: 'server error' });

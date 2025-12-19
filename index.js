@@ -4,6 +4,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 
 
+
 const app = express();
 
 app.use(cors());
@@ -20,6 +21,7 @@ app.use("/api/contests", contestRoutes);
 app.get("/", (req, res) => {
   res.send("ContestHub Server Running");
 });
+
 
 // mongo connect
 mongoose
