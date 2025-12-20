@@ -13,9 +13,12 @@ app.use(express.json());
 // routes
 const userRoutes = require("./routes/users");
 const contestRoutes = require("./routes/contests");
+const submissionsRoutes = require("./routes/submissions");
 
 app.use("/api/users", userRoutes);
 app.use("/api/contests", contestRoutes);
+app.use("/api/submissions", submissionsRoutes);
+
 
 // test route
 app.get("/", (req, res) => {

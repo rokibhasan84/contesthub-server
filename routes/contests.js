@@ -33,7 +33,7 @@ router.post("/", verifyJWT, verifyCreator, async (req, res) => {
 router.get("/popular", async (req, res) => {
   const contests = await Contest.find({ status: "approved" })
     .sort({ participants: -1 })
-    .limit(5);
+    .limit(6);
 
   res.send(contests);
 });
@@ -161,6 +161,21 @@ router.patch("/winner/:id", verifyJWT, verifyCreator, async (req, res) => {
   }
 });
 
+// Get Recent Winners (Public)
+router.get("/winners/recent", async (req, res) => {
+  try {
+    const winners = await Contest.find({
+      "winner.email": { $exists: true }
+    })
+      .select("name prize winner")
+      .sort({ createdAt: -1 })
+      .limit(5);
+
+    res.send(winners);
+  } catch (err) {
+    res.status(500).send({ message: "Failed to load recent winners" });
+  }
+});
 
 // DELETE contest (ADMIN)
 router.delete("/:id", verifyJWT, verifyAdmin, async (req, res) => {
@@ -337,107 +352,3 @@ module.exports = router;
 
 
 
-
-
-
-// const express = require("express");
-// const Contest = require("../models/Contest");
-// const verifyJWT = require("../middleware/verifyJWT");
-// const verifyCreator = require("../middleware/verifyCreator");
-// const verifyAdmin = require("../middleware/verifyAdmin");
-// const { create } = require("../models/User");
-
-// const router = express.Router();
-
-// // add contest
-// router.post("/", verifyJWT, verifyCreator, async (req, res) => {
-//   console.log("add contest called:", req.body);
-//   try {
-//     const contest = new Contest({
-//       ...req.body,
-//       creatorEmail: req.user.email,
-//       status: "pending",
-//       createdAt: new Date(),
-//     });
-
-//     const result = await Contest.create(contest);
-//     res.send(result);
-//   } catch (err) {
-//     res.status(500).send({ message: "Failed to add contest" });
-//   }
-// });
-
-
-// // get all contests
-// router.get("/", verifyJWT, verifyAdmin, async (req, res) => {
-//   const contests = await Contest.find().sort({ createdAt: -1 });
-//   res.send(contests);
-// });
-
-// // get approved contests (public)
-// router.get("/approved", verifyJWT, verifyAdmin, async (req, res) => {
-//   const contests = (await Contest.find({ status: "approved" })).sort({ participants: -1 });
-//   res.send(contests);
-// });
-
-// // GET api contests by logged in creator
-// router.get("/my", verifyJWT, verifyCreator, async (req, res) => {
-//   const email = req.user.email;
-//   const contests = await Contest.find({ creatorEmail: email })
-//     .sort({ createdAt: -1 });
-//   res.send(contests);
-// });
-
-
-
-// // get all pending contests (ADMIN)
-// router.get("/pending/all", verifyJWT, verifyAdmin, async (req, res) => {
-//   const contests = await Contest.find({ status: "pending" });
-//   res.send(contests);
-// });
-
-// // approve contest (ADMIN)
-// router.patch("/approve/:id", verifyJWT, verifyAdmin, async (req, res) => {
-//   const result = await Contest.findByIdAndUpdate(
-//     req.params.id,
-//     { status: "approved" },
-//     { new: true }
-//   );
-//   res.send(result);
-// });
-
-// // reject contest (ADMIN)
-// router.patch("/reject/:id", verifyJWT, verifyAdmin, async (req, res) => {
-//   const result = await Contest.findByIdAndUpdate(
-//     req.params.id,
-//     { status: "rejected" },
-//     { new: true }
-//   );
-//   res.send(result);
-// });
-
-// // get single contest details 
-// router.get("/:id", async (req, res) => {
-//   const contest = await Contest.findById(req.params.id);
-//   res.send(contest);
-// });
-
-// // participate in contest
-// router.patch("/participate/:id", verifyJWT, async (req, res) => {
-//   const email = req.user.email;
-
-//   const contest = await Contest.findById(req.params.id);
-
-//   if (contest.participants.includes(email)) {
-//     return res.status(400).send({ message: "Already participated" });
-//   }
-
-//   contest.participants.push(email);
-//   await contest.save();
-
-//   res.send({ message: "Participation successful" });
-// });
-
-
-
-// module.exports = router;

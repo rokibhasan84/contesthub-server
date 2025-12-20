@@ -15,6 +15,8 @@ const submissionSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    userName: String,
+    userPhoto: String,
     isWinner: {
       type: Boolean,
       default: false,

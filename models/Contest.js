@@ -17,7 +17,10 @@ const contestSchema = new mongoose.Schema(
     winner: {
       name: String,
       photo: String,
-      email: String
+      email: String,
+      prize: Number,
+      image: String,
+      submittedAt: Date
     },
     submissions: [
       {
@@ -25,7 +28,22 @@ const contestSchema = new mongoose.Schema(
         userName: String,
         userPhoto: String,
         taskLink: String,
-        submittedAt: Date
+        submittedAt: {
+          type: Date,
+          default: Date.now
+        }
+      },
+    ],
+    leaderboard: [
+      {
+        userEmail: String,
+        userName: String,
+        userPhoto: String,
+        prize: Number,
+        submittedAt: {
+          type: Date,
+          default: Date.now
+        }
       }
     ]
   },
