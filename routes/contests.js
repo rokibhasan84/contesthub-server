@@ -126,6 +126,29 @@ router.get("/leaderboard", async (req, res) => {
   }
 });
 
+// GET user stats
+router.get("/stats", verifyJWT, async (req, res) => {
+  const email = req.user.email;
+
+  try {
+    // participated = submissions count
+    const participated = await Submission.countDocuments({
+      userEmail: email
+    });
+
+    // won = contests where user is winner
+    const won = await Contest.countDocuments({
+      "winner.email": email
+    });
+
+    res.send({
+      participated,
+      won
+    });
+  } catch (err) {
+    res.status(500).send({ message: "Failed to load stats" });
+  }
+});
 
 
 

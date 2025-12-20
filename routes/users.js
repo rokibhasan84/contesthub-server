@@ -38,6 +38,47 @@ router.get('/:email', async (req, res) => {
   }
 });
 
+
+
+
+
+// // routes/users.js
+// router.get("/profile", verifyJWT, async (req, res) => {
+//   const email = req.user.email;
+
+//   const user = await User.findOne({ email });
+
+//   const participated = await Contest.countDocuments({
+//     participants: email
+//   });
+
+//   const won = await Contest.countDocuments({
+//     "winner.email": email
+//   });
+
+//   res.json({
+//     user,
+//     stats: {
+//       participated,
+//       won
+//     }
+//   });
+// });
+
+// router.patch("/profile", verifyJWT, async (req, res) => {
+//   const email = req.user.email;
+//   const { name, photoURL, bio } = req.body;
+
+//   const updated = await User.findOneAndUpdate(
+//     { email },
+//     { name, photoURL, bio },
+//     { new: true }
+//   );
+
+//   res.json(updated);
+// });
+
+
 // GET all users (ADMIN ONLY)
 router.get("/", verifyJWT, async (req, res) => {
   const users = await User.aggregate([
